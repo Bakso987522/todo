@@ -21,7 +21,7 @@
       <li
           v-for="(task, index) in tasks"
           :key="index"
-          class="flex max-w-ml justify-between items-center p-2 break-words bg-gray-700 border border-gray-400 rounded-lg shadow-sm"
+          class="flex max-w-auto justify-between items-center p-2 break-words bg-gray-700 border border-gray-400 rounded-lg shadow-sm"
       >
         <span>{{ task }}</span>
         <button

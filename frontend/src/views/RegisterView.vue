@@ -2,11 +2,13 @@
   <div class="max-w-md mx-auto mt-10">
     <h2 class="text-2xl font-bold mb-4">Rejestracja</h2>
     <form @submit.prevent="register">
-      <input v-model="name" type="text" placeholder="Imię" class="input" />
-      <input v-model="email" type="email" placeholder="Email" class="input" />
-      <input v-model="password" type="password" placeholder="Hasło" class="input" />
-      <input v-model="rePassword" type="password" placeholder="Powtórz Hasło" class="input" />
-      <button type="submit" class="btn">Zarejestruj </button>
+      <input v-model="name" required type="text" placeholder="Imię" class="input" />
+      <input v-model="email" required type="email" placeholder="Email" class="input" />
+      <input v-model="password" required type="password" placeholder="Hasło" class="input" />
+      <input v-model="rePassword" required type="password" placeholder="Powtórz Hasło" class="input" />
+      <button type="submit" :disabled="auth.loading" class="btn disabled:opacity-40">
+        {{auth.loading ? 'Rejestracja...' : 'Zarejestruj'}}
+      </button>
     </form>
   </div>
 </template>
@@ -14,19 +16,20 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {registerUser} from "@/services/authService.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const rePassword = ref('')
 const router = useRouter()
-
-function register() {
-  if(password.value !== rePassword.value) {
+const auth = useAuthStore()
+async function register() {
+  if (password.value !== rePassword.value) {
     alert('Hasła nie zgadzają się')
-  }else{
-    registerUser(name.value, email.value, password.value)
+  } else {
+    await useAuthStore().register(name.value, email.value, password.value)
+    await router.push('/todos')
   }
 }
 </script>

@@ -2,9 +2,11 @@
   <div class="max-w-md mx-auto mt-10">
     <h2 class="text-2xl font-bold mb-4">Logowanie</h2>
     <form @submit.prevent="loginProcess">
-      <input v-model="email" type="email" placeholder="Email" class="input" />
-      <input v-model="password" type="password" placeholder="Hasło" class="input" />
-      <button type="submit" class="btn">Zaloguj</button>
+      <input v-model="email" required type="email" placeholder="Email" class="input" />
+      <input v-model="password" required type="password" placeholder="Hasło" class="input" />
+      <button type="submit" :disabled="useAuthStore().loading" class="btn disabled:opacity-40">
+        {{ useAuthStore().loading ? 'Logowanie...' : 'Zaloguj' }}
+      </button>
     </form>
   </div>
 </template>
@@ -12,7 +14,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {loginUser} from "../services/authService.js";
+import { useAuthStore} from "@/stores/authStore.js";
 
 const email = ref('')
 const password = ref('')
@@ -20,8 +22,7 @@ const error = ref('')
 const router = useRouter()
 
 async function loginProcess() {
-    const user = await loginUser(email.value, password.value)
-    console.log(user)
+    const user = await useAuthStore().login(email.value, password.value)
     await router.push('/todos')
 }
 </script>

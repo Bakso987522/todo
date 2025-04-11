@@ -1,0 +1,59 @@
+import {defineStore} from "pinia";
+import {loginUser, checkAuthStatus, registerUser, logoutUser} from "@/services/authService.js";
+
+export const useAuthStore = defineStore('auth', {
+    state: () => ({
+        user: null,
+        loading: null,
+        error: null
+
+    }),
+
+    getters: {
+        isLogged: (state) => !!state.user
+    },
+
+    actions: {
+        async login(email, password) {
+            this.loading = true
+            try {
+                this.user = await loginUser(email, password)
+                // await this.fetchUser()
+            }catch(e) {
+                this.error = e
+            }finally {
+                this.loading = false
+            }
+
+
+        },
+        async fetchUser() {
+            if(this.user) return
+            try {
+                this.user = await checkAuthStatus()
+            }catch {
+                this.user = null
+            }
+        },
+        async register(name, email, password) {
+            this.loading = true
+            try {
+                this.user = await registerUser(name, email, password)
+                await this.fetchUser()
+            }catch(e) {
+                this.error = e
+            }finally {
+                this.loading = false
+            }
+        },
+        async logout() {
+            try {
+                await logoutUser()
+            }catch(e) {
+                this.error = e
+            }finally {
+                this.user = null
+            }
+        }
+    }
+})

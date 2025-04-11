@@ -3,7 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import TodoListView from "../views/TodoListView.vue";
-import {checkAuthStatus} from "@/services/authService.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const routes = [
     {
@@ -29,6 +29,9 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: "/logout"
+    }
 ];
 
 const router = createRouter({
@@ -37,9 +40,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.requiresAuth) {
-        const user = await checkAuthStatus()
-        if (!user) {
+    if ((to.name === 'login' || to.name === 'register') && useAuthStore().isLogged) {
+        next({name: 'todos'})
+    }
+    else if (to.meta.requiresAuth) {
+        if (!useAuthStore().isLogged) {
             next({name: 'login'})
         } else {
             next()

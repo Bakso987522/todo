@@ -3,7 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import TodoListView from "../views/TodoListView.vue";
-import {checkAuthStatus} from "@/services/authService.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const routes = [
     {
@@ -37,12 +37,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const user = await checkAuthStatus()
-    if (to.name === 'login' || to.name === 'register' && user) {
+    if ((to.name === 'login' || to.name === 'register') && useAuthStore().isLogged) {
         next({name: 'todos'})
     }
     else if (to.meta.requiresAuth) {
-        if (!user) {
+        if (!useAuthStore().isLogged) {
             next({name: 'login'})
         } else {
             next()

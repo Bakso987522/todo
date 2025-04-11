@@ -39,7 +39,8 @@
 
 <script setup>
 import { ref } from 'vue'
-const isLogged = ref(false);
+import {useAuthStore} from "@/stores/authStore.js";
+const isLogged = useAuthStore().isLogged
 const newTask = ref('')
 const tasks = ref([])
 

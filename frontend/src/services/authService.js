@@ -12,9 +12,6 @@ export async function loginUser(email, password) {
     try {
         await axios.get('/sanctum/csrf-cookie')
         await axios.post('/login', {email, password})
-        const {data: user} = await axios. get('/api/user')
-        return user
-
     } catch (error) {
         console.log(error)
     }
