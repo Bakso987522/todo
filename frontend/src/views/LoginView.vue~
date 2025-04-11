@@ -20,9 +20,16 @@ const error = ref('')
 const router = useRouter()
 
 async function loginProcess() {
+  try{
     const user = await loginUser(email.value, password.value)
     console.log(user)
-    await router.push('/todos')
+    router.push('/todos')
+
+
+  } catch (e) {
+
+      error.value = e
+    }
 }
 </script>
 

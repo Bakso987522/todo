@@ -25,6 +25,7 @@ const router = useRouter()
 function register() {
   if(password.value !== rePassword.value) {
     alert('Hasła nie zgadzają się')
+    return
   }else{
     registerUser(name.value, email.value, password.value)
   }
