@@ -4,8 +4,10 @@
     <form @submit.prevent="register">
       <input v-model="name" required type="text" placeholder="Imię" class="input" />
       <input v-model="email" required type="email" placeholder="Email" class="input" />
-      <input v-model="password" required type="password" placeholder="Hasło" class="input" />
-      <input v-model="rePassword" required type="password" placeholder="Powtórz Hasło" class="input" />
+      <input v-model="password" required type="password" minlength="8" placeholder="Hasło" class="input" />
+      <input v-model="rePassword" required type="password" minlength="8" placeholder="Powtórz Hasło" class="input" />
+      <p v-if="!matchPassword && rePassword" class="text-red-500 text-xm m-2">Hasła nie są takie same</p>
+      <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
       <button type="submit" :disabled="auth.loading" class="btn disabled:opacity-40">
         {{auth.loading ? 'Rejestracja...' : 'Zarejestruj'}}
       </button>
@@ -14,9 +16,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {useAuthStore} from "@/stores/authStore.js";
+
 
 const name = ref('')
 const email = ref('')
@@ -24,14 +27,16 @@ const password = ref('')
 const rePassword = ref('')
 const router = useRouter()
 const auth = useAuthStore()
+const matchPassword = computed(() => {
+  return password.value === rePassword.value
+})
 async function register() {
-  if (password.value !== rePassword.value) {
-    alert('Hasła nie zgadzają się')
-  } else {
-    await useAuthStore().register(name.value, email.value, password.value)
-    await router.push('/todos')
-  }
+    await auth.register(name.value, email.value, password.value)
+    if (!auth.error) {
+      await router.push('/todos')
+    }
 }
+
 </script>
 
 <style scoped>

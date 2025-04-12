@@ -1,12 +1,22 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
-
+import Sidebar from "@/components/Sidebar.vue";
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col bg-gray-900 text-white">
+    <!-- Navbar u góry -->
     <Navbar />
-    <!-- Widok strony -->
-    <Router View />
+
+    <!-- Sidebar + zawartość -->
+    <div class="flex flex-1">
+      <!-- Sidebar po lewej -->
+      <Sidebar class="w-64 bg-gray-800" />
+
+      <!-- Główna zawartość (dynamiczne widoki z routera) -->
+      <main class="flex-1 p-6 bg-gray-900">
+        <RouterView />
+      </main>
+    </div>
   </div>
 </template>

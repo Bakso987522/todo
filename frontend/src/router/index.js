@@ -3,13 +3,13 @@ import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import TodoListView from "../views/TodoListView.vue";
-import {useAuthStore} from "@/stores/authStore.js";
+import {useAuthStore} from "../stores/authStore.js";
 
 const routes = [
     {
         path: "/",
-        name: "home",
-        component: TodoListView,
+        name: "default",
+        component: LoginView,
     },
     {
         path: "/login",
@@ -37,11 +37,19 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    if ((to.name === 'login' || to.name === 'register') && useAuthStore().isLogged) {
+    const auth = useAuthStore()
+    if (
+        ['login', 'register'].includes(to.name) &&
+        to.name !== from.name
+    ) {
+        auth.error = null
+    }
+
+    if ((to.name === 'login' || to.name === 'register') && auth.isLogged) {
         next({name: 'todos'})
     }
     else if (to.meta.requiresAuth) {
-        if (!useAuthStore().isLogged) {
+        if (!auth.isLogged) {
             next({name: 'login'})
         } else {
             next()

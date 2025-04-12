@@ -1,31 +1,22 @@
 import axios from '@/axios';
 
 export async function registerUser(name, email, password) {
-    try {
-        await axios.get('/sanctum/csrf-cookie')
-        await axios.post('/register', {name, email, password, password_confirmation: password})
-    } catch (error) {
-        console.log(error)
-    }
+    await axios.get('/sanctum/csrf-cookie')
+    await axios.post('/register', {
+        name,
+        email,
+        password,
+        password_confirmation: password
+    })
 }
 export async function loginUser(email, password) {
-    try {
-        await axios.get('/sanctum/csrf-cookie')
-        await axios.post('/login', {email, password})
-    } catch (error) {
-        console.log(error)
-    }
+    await axios.get('/sanctum/csrf-cookie')
+    await axios.post('/login', {email, password})
 }
 export async function logoutUser() {
     await axios.post('/logout')
 }
 export async function checkAuthStatus() {
-    try {
-        const {data: user} = await axios.get('/api/user')
-        return user
-    }
-    catch (error) {
-        console.log(error)
-    }
-
+    const {data: user} = await axios.get('/api/user')
+    return user
 }

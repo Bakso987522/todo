@@ -4,6 +4,7 @@
     <form @submit.prevent="loginProcess">
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" placeholder="Hasło" class="input" />
+      <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
       <button type="submit" :disabled="useAuthStore().loading" class="btn disabled:opacity-40">
         {{ useAuthStore().loading ? 'Logowanie...' : 'Zaloguj' }}
       </button>
@@ -20,6 +21,7 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const router = useRouter()
+const auth = useAuthStore()
 
 async function loginProcess() {
     const user = await useAuthStore().login(email.value, password.value)
