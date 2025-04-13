@@ -9,6 +9,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 .input {
-  @apply w-full p-2 border rounded mb-4 bg-gray-800 text-white;
+  @apply w-full p-2 border rounded mb-4 bg-gray-800;
 }
 

@@ -1,10 +1,10 @@
 <template>
-  <div class="max-w-md mx-auto mt-10">
+  <div class="max-w-md mx-auto mt-20 ">
     <h2 class="text-2xl font-bold mb-4">Logowanie</h2>
     <form @submit.prevent="loginProcess">
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" placeholder="Hasło" class="input" />
-      <p v-if="auth.error" class="text-red-600 text-xm m-2">{{auth.error}}</p>
+      <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
       <button type="submit" :disabled="useAuthStore().loading" class="btn disabled:opacity-40">
         {{ useAuthStore().loading ? 'Logowanie...' : 'Zaloguj' }}
       </button>

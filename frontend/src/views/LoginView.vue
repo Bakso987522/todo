@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md mx-auto mt-10">
+  <div class="max-w-md mx-auto mt-40 ">
     <h2 class="text-2xl font-bold mb-4">Logowanie</h2>
     <form @submit.prevent="loginProcess">
       <input v-model="email" required type="email" placeholder="Email" class="input" />

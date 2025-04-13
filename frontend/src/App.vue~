@@ -1,22 +1,25 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
+import {useAuthStore} from "@/stores/authStore.js";
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-900 text-white">
-    <!-- Navbar u góry -->
-    <Navbar />
+  <div class="grid grid-cols-[16rem_1fr] grid-rows-[4rem_1fr] min-h-screen bg-gray-900">
 
-    <!-- Sidebar + zawartość -->
-    <div class="flex flex-1">
-      <!-- Sidebar po lewej -->
-      <Sidebar class="w-64 bg-gray-800" />
+    <!-- Navbar -->
+    <Navbar class="col-span-2 row-start-1" />
 
-      <!-- Główna zawartość (dynamiczne widoki z routera) -->
-      <main class="flex-1 p-6 bg-gray-900">
+    <!-- Sidebar -->
+    <Sidebar v-if="useAuthStore().isLogged" class="row-start-2 col-start-1 hidden md:flex" />
+
+    <!-- Main content -->
+    <main class="row-start-2 col-start-2 p-6 overflow-auto">
+      <!-- Jeśli chcesz centralnie, dodaj wrapper wewnątrz -->
+      <div class="max-w-3xl mx-auto w-full">
         <RouterView />
-      </main>
-    </div>
+      </div>
+    </main>
+
   </div>
 </template>

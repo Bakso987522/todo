@@ -14,7 +14,7 @@ const handleLogout = async () => {
 
 <template>
 
-  <nav class="m-2 mt-1 h-16 px-6 bg-gray-800 flex justify-between items-center text-lg font-semibold text-gray-300 shadow-md rounded-lg ">
+  <nav class="m-1 mt-1 h-16 px-6 bg-gray-800 flex justify-between items-center text-lg font-semibold text-gray-300 shadow-md rounded-lg ">
 
     <!-- Logo / Nazwa -->
     <div class="text-2xl font-bold">
