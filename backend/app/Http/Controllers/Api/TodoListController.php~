@@ -49,7 +49,7 @@ class TodoListController extends Controller
         if ($request->user()->id !== $todolist->user_id) {
             return response()->json(['message' => 'Not found'], 404);
         }
-        $todolist->load('TodoItems');
+        $todolist->load('items');
         return response()->json($todolist);
     }
 

@@ -52,6 +52,6 @@ class User extends Authenticatable
     }
     public function todoItems()
     {
-        return $this->hasManyThrough(TodoItem::class, TodoList::class);
+        return $this->hasManyThrough(Task::class, TodoList::class);
     }
 }
