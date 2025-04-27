@@ -24,7 +24,6 @@ class TodoItemController extends Controller
     {
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'is_done' => ['boolean'],
             'todo_list_id' => ['required', 'exists:todo_lists,id'],
         ]);
         $user = request()->user();
@@ -49,7 +48,14 @@ class TodoItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $val = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'is_done' => ['sometimes', 'boolean']
+        ]);
+        $user = request()->user();
+        $item = $user->todoItems()->findOrFail($id);
+        $item->update($val);
+        return response()->json($item);
     }
 
     /**
