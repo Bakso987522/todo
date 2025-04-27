@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
                 this.user = await loginUser(email, password)
                 await this.fetchUser()
             }catch(e) {
-                this.error = this._parseError(e)
+                console.log(e)
             }finally {
                 this.loading = false
             }
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', {
                 this.user = await registerUser(name, email, password)
                 await this.fetchUser()
             }catch(e) {
-                this.error = this._parseError(e)
+                console.log(e)
             }finally {
                 this.loading = false
             }
@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
                 this.error = null
                 await logoutUser()
             }catch(e) {
-                this.error = this._parseError(e)
+                console.log(e)
             }finally {
                 this.user = null
             }

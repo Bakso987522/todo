@@ -1,22 +1,42 @@
 <script setup>
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import { useAuthStore } from '@/stores/authStore.js'
 import router from '@/router/index.js'
+import {useTodoStore} from '@/stores/todoStore.js'
 
 const auth = useAuthStore()
-
+const todoStore = useTodoStore()
+const isAdding = ref(true)
 const handleLogout = async () => {
   await auth.logout()
   await router.push('/login')
 }
+onMounted(async () => {
+  await todoStore.fetchTodoLists()
+})
+async function addTodoList(){
+
+}
+
 </script>
 <template>
-  <aside class="m-2 mb-1 bg-gray-800 text-white p-6 shadow-xl flex flex-col rounded-lg">
+  <aside class="w-full m-2 mb-1 bg-gray-800 text-white p-6 shadow-md flex flex-col rounded-lg">
 
-    <nav class="space-y-4 flex-1">
-      <router-link to="/todos" class="block hover:underline">📋 Zadania</router-link>
-      <router-link to="/konto" class="block hover:underline">👤 Konto</router-link>
+    <nav class="space-y-4 flex-1" >
+      <ul class="space-y-2">
+      <li class="hover:cursor-pointer hover:text-gray-500" v-for="todoList in todoStore.todoLists" :key="todoList.id" @click="todoStore.fetchTodoList(todoList.id)">
+        {{todoList.name}}
+      </li>
+        <li v-if="isAdding">
+          <input
+              type="text"
+              @keyup.enter="addTodoList"
+              class="w-full flex-1 px-4 py-2 border text-gray-800 border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 md:max-w-xl"
+              placeholder="Dodaj zadanie..."
+          >
+        </li>
+      </ul>
     </nav>
-    <button @click="handleLogout" :disabled="auth.isLoading" class="hover:text-gray-500  disabled:opacity-50">🚪 Wyloguj</button>
+    <button @click="handleLogout" :disabled="auth.loading" class="hover:text-gray-500  disabled:opacity-40">Wyloguj</button>
   </aside>
 </template>

@@ -1,0 +1,72 @@
+import {defineStore} from "pinia";
+import TodoService from "../services/todoService.js";
+
+export const useTodoStore = defineStore('todo', {
+    state: () => ({
+        todoLists: null,
+        todoList: null,
+        loading: null,
+        error: null
+    }),
+    actions: {
+        async fetchTodoLists() {
+            this.loading = true
+            try {
+                this.error = null
+                this.todoLists = await TodoService.getTodoLists()
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+
+            }
+        },
+        async fetchTodoList(id) {
+            this.loading = true
+            try {
+                this.error = null
+                this.todoList = await TodoService.getTodoList(id)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+
+            }
+        },
+        async addTodoList(data) {
+            this.loading = true
+            try {
+                this.error = null
+                this.todoList = await TodoService.addTodoList(data)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+            }
+        },
+        async addTodoItem(name) {
+            this.loading = true
+            try {
+                this.error = null
+                await TodoService.addTodoItem(name, this.todoList.id)
+                await this.fetchTodoList(this.todoList.id)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+            }
+        },
+        async updateTodoItem(id, data) {
+            this.loading = true
+            try {
+                this.error = null
+                await TodoService.updateTodoItem(id, data)
+                await this.fetchTodoList(this.todoList.id)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+            }
+        }
+    }
+})

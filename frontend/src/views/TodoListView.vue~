@@ -1,6 +1,6 @@
 <template>
   <div class="w-full mt-10 p-6">
-    <h2 class="text-2xl font-bold mb-4">{{ todoStore.todoList.name }}</h2>
+    <h2 class="text-2xl font-bold mb-4">{{ todoList.name }}</h2>
 
     <div class="flex flex-col sm:flex-row gap-2 mb-4">
       <input
