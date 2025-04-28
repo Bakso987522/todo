@@ -5,8 +5,8 @@
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" placeholder="Hasło" class="input" />
       <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
-      <button type="submit" :disabled="useAuthStore().loading" class="btn disabled:opacity-40">
-        {{ useAuthStore().loading ? 'Logowanie...' : 'Zaloguj' }}
+      <button type="submit" :disabled="auth.loading" class="btn disabled:opacity-40">
+        {{ auth.loading ? 'Logowanie...' : 'Zaloguj' }}
       </button>
     </form>
   </div>

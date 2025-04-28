@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
-// ✨ Interceptor dodający token CSRF z ciasteczka
 axios.interceptors.request.use(config => {
     const token = Cookies.get('XSRF-TOKEN');
     if (token) {
