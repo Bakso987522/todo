@@ -17,7 +17,7 @@ const handleLogout = async () => {
   <nav class="m-2 mt-1 h-16 px-6 bg-gray-800 flex justify-between items-center text-lg font-semibold text-gray-300 shadow-md rounded-lg ">
 
     <!-- Logo / Nazwa -->
-    <div class="text-2xl font-bold">
+    <div class="text-3xl font-bold">
       {{ auth.isLogged ? "Witaj, " + auth.user.name : "ToDoApp" }}
     </div>
 
@@ -29,7 +29,7 @@ const handleLogout = async () => {
 
     <div class="hidden md:flex gap-4 items-center" v-else>
       <div class="flex flex-col items-end text-sm">
-        <p class="text-gray-300">
+        <p class="text-gray-300 text-base">
           {{
             new Intl.DateTimeFormat('pl-PL', { weekday: 'long' })
                 .format(new Date())

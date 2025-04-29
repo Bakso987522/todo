@@ -38,6 +38,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const auth = useAuthStore()
+    if(!auth.isLogged && !auth.user){
+        await auth.fetchUser()
+    }
     if (
         ['login', 'register'].includes(to.name) &&
         to.name !== from.name

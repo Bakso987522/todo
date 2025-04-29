@@ -13,7 +13,7 @@ class TodoList extends Model
         'color',
         'is_archived',
         'done_at',
-        'dead_line',
+        'deadline',
         'deleted_at',
 
     ];

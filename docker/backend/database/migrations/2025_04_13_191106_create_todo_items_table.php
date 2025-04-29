@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->boolean('is_done')
+            $table->boolean('is_done')->default(false);
+            $table->date('deadline')->nullable();
             $table->foreignId('todo_list_id')->constrained();
         });
     }

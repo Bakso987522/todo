@@ -1,16 +1,18 @@
 <script setup>
+import {onMounted} from "vue";
 import { useAuthStore } from '@/stores/authStore'
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 
 const auth = useAuthStore()
+
 </script>
 
 <template>
   <div
       :class="[
       'grid min-h-screen grid-rows-[4rem_1fr] bg-gray-900',
-      auth.isLogged ? 'grid-cols-1 md:grid-cols-[16rem_1fr]' : 'grid-cols-1'
+      auth.isLogged ? 'grid-cols-1 md:grid-cols-[20rem_1fr]' : 'grid-cols-1'
     ]"
   >
 

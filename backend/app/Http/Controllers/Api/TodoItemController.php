@@ -29,7 +29,7 @@ class TodoItemController extends Controller
         $user = request()->user();
         $list = $user->todoLists()->findOrFail($val['todo_list_id']);
         $item = $list->todoItems()->create([
-            'name' => $val['name'],
+            'name' => ucfirst($val['name']),
             'is_done' => $val['is_done'] ?? false,
         ]);
         return response()->json($item);

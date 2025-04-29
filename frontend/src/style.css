@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,9 +6,38 @@
 
 body {
   @apply bg-gray-900 text-white font-sans antialiased;
-  font-family: 'Inter', sans-serif;
+  font-family: "Rubik", sans-serif;
 }
 .input {
   @apply w-full p-2 border rounded mb-4 bg-gray-800 text-white;
 }
+.yellow {
+ @apply bg-yellow-500 accent-yellow-500;
+
+}
+div.yellow {
+  @apply bg-yellow-500 bg-opacity-15;
+}
+.green {
+ @apply bg-green-500 accent-green-500;
+}
+div.green {
+  @apply bg-green-500 bg-opacity-15;
+}
+.red {
+  @apply bg-red-500 accent-red-500;
+
+}
+div.red {
+  @apply bg-red-500 bg-opacity-15;
+}
+
+.blue {
+  @apply bg-blue-500 accent-blue-500;
+
+}
+div.blue {
+  @apply bg-blue-500 bg-opacity-15;
+}
+
 

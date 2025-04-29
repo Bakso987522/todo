@@ -38,7 +38,10 @@ class TodoListController extends Controller
         $user = $request->user();
 
         $todo = TodoList::create([
-            ...$val,
+            'name' => ucfirst($val['name']),
+            'description' => ucfirst($val['name']),
+            'color' => $val['color'],
+            'dead_line' => $val['dead_line'],
             'user_id' => $user->id
         ]);
 
@@ -55,7 +58,7 @@ class TodoListController extends Controller
         }
         $todolist->load(['todoItems' => function ($query) {
             $query->orderBy('is_done')
-                ->orderBy('updated_at', 'desc');
+                ->orderBy('id', 'desc');
         }]);
 
         return response()->json($todolist);

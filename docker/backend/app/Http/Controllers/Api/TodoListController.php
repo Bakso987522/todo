@@ -58,8 +58,6 @@ class TodoListController extends Controller
                 ->orderBy('updated_at', 'desc');
         }]);
 
-    }]);
-
         return response()->json($todolist);
     }
 

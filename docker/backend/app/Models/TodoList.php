@@ -13,7 +13,7 @@ class TodoList extends Model
         'color',
         'is_archived',
         'done_at',
-        'dead_line',
+        'deadline',
         'deleted_at',
 
     ];
@@ -21,5 +21,9 @@ class TodoList extends Model
     public function TodoItems()
     {
         return $this->hasMany(TodoItem::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
