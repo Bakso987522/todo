@@ -5,7 +5,8 @@ export const useTodoStore = defineStore('todo', {
     state: () => ({
         todoLists: null,
         todoList: null,
-        loading: null,
+        loading: false,
+        adding: false,
         error: null
     }),
     actions: {
@@ -44,16 +45,16 @@ export const useTodoStore = defineStore('todo', {
                 this.loading = false
             }
         },
-        async addTodoItem(name) {
-            this.loading = true
+        async addTodoItem(name, deadline, tag_name) {
             try {
+                this.adding = true
                 this.error = null
-                await TodoService.addTodoItem(name, this.todoList.id)
+                await TodoService.addTodoItem(name, deadline, tag_name, this.todoList.id)
                 await this.fetchTodoList(this.todoList.id)
             } catch (e) {
                 console.log(e)
-            } finally {
-                this.loading = false
+            }finally {
+                this.adding = false
             }
         },
         async updateTodoItem(id, data) {

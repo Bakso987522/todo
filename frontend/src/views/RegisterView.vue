@@ -8,9 +8,12 @@
       <input v-model="rePassword" required type="password" minlength="8" placeholder="Powtórz Hasło" class="input" />
       <p v-if="!matchPassword && rePassword" class="text-red-500 text-xm m-2">Hasła nie są takie same</p>
       <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
-      <button type="submit" :disabled="auth.loading" class="btn disabled:opacity-40">
-        {{auth.loading ? 'Rejestracja...' : 'Zarejestruj'}}
-      </button>
+      <LoadingButton
+          text="Zarejestruj się"
+          :loading="auth.loading"
+          loadingText="Rejestracja..."
+          @click="handleRegister"
+      />
     </form>
   </div>
 </template>
@@ -19,6 +22,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {useAuthStore} from "@/stores/authStore.js";
+import LoadingButton from "@/components/LoadingButton.vue";
 
 
 const name = ref('')
@@ -30,7 +34,7 @@ const auth = useAuthStore()
 const matchPassword = computed(() => {
   return password.value === rePassword.value
 })
-async function register() {
+async function handleRegister() {
     await auth.register(name.value, email.value, password.value)
     if (!auth.error) {
       await router.push('/todos')

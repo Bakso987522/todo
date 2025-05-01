@@ -12,32 +12,83 @@ body {
   @apply w-full p-2 border rounded mb-4 bg-gray-800 text-white;
 }
 .yellow {
- @apply bg-yellow-500 accent-yellow-500;
-
+  @apply bg-yellow-500 accent-yellow-500;
+}
+button.yellow {
+  @apply bg-yellow-500 hover:bg-yellow-600;
 }
 div.yellow {
   @apply bg-yellow-500 bg-opacity-15;
 }
 .green {
- @apply bg-green-500 accent-green-500;
+  @apply bg-green-500 accent-green-500;
+}
+button.green {
+  @apply bg-green-500 hover:bg-green-600;
 }
 div.green {
   @apply bg-green-500 bg-opacity-15;
 }
 .red {
   @apply bg-red-500 accent-red-500;
-
+}
+button.red {
+  @apply bg-red-500 hover:bg-red-600;
 }
 div.red {
   @apply bg-red-500 bg-opacity-15;
 }
-
 .blue {
   @apply bg-blue-500 accent-blue-500;
-
+}
+button.blue {
+  @apply bg-blue-500 hover:bg-blue-600;
 }
 div.blue {
   @apply bg-blue-500 bg-opacity-15;
 }
-
-
+.pink {
+  @apply bg-pink-500 accent-pink-500;
+}
+button.pink {
+  @apply bg-pink-500 hover:bg-pink-600;
+}
+div.pink {
+  @apply bg-pink-500 bg-opacity-15;
+}
+.orange {
+  @apply bg-orange-500 accent-orange-500;
+}
+button.orange {
+  @apply bg-orange-500 hover:bg-orange-600;
+}
+div.orange {
+  @apply bg-orange-500 bg-opacity-15;
+}
+.purple {
+  @apply bg-purple-500 accent-purple-500;
+}
+button.purple {
+  @apply bg-purple-500 hover:bg-purple-600;
+}
+div.purple {
+  @apply bg-purple-500 bg-opacity-15;
+}
+.gray {
+  @apply bg-gray-500 accent-gray-500;
+}
+button.gray {
+  @apply bg-gray-500 hover:bg-gray-600;
+}
+div.gray {
+  @apply bg-gray-500 bg-opacity-15;
+}
+.teal {
+  @apply bg-teal-500 accent-teal-500;
+}
+button.teal {
+  @apply bg-teal-500 hover:bg-teal-600;
+}
+div.teal {
+  @apply bg-teal-500 bg-opacity-15;
+}

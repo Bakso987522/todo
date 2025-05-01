@@ -18,8 +18,9 @@ class TodoListController extends Controller
 
         $user = request()->user();
 
-        $lists = TodoList::where('user_id', $user->id)->get();
-        Log::info('Znalezione listy:', $lists->toArray());
+        $lists = TodoList::with('color')
+            ->where('user_id', $user->id)
+            ->get();
 
         return response()->json($lists);
     }
@@ -29,10 +30,11 @@ class TodoListController extends Controller
      */
     public function store(Request $request)
     {
+
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'color' => ['nullable', 'string'],
+            'color_id' => ['nullable', 'integer', 'exists:colors,id'],
             'dead_line' => ['nullable', 'date'],
         ]);
         $user = $request->user();
@@ -40,8 +42,8 @@ class TodoListController extends Controller
         $todo = TodoList::create([
             'name' => ucfirst($val['name']),
             'description' => ucfirst($val['name']),
-            'color' => $val['color'],
-            'dead_line' => $val['dead_line'],
+            'color_id' => $val['color_id'] ?? null,
+            'dead_line' => $val['dead_line'] ?? null,
             'user_id' => $user->id
         ]);
 
@@ -56,10 +58,16 @@ class TodoListController extends Controller
         if ($request->user()->id !== $todolist->user_id) {
             return response()->json(['message' => 'Not found'], 404);
         }
-        $todolist->load(['todoItems' => function ($query) {
-            $query->orderBy('is_done')
-                ->orderBy('id', 'desc');
-        }]);
+        $todolist->load([
+            'todoItems' => function ($query) {
+                $query->with('tag')
+                ->orderBy('is_done')
+                    ->orderBy('id', 'desc');
+            },
+            'color'
+        ]);
+
+
 
         return response()->json($todolist);
     }
@@ -75,7 +83,7 @@ class TodoListController extends Controller
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'color' => ['nullable', 'string'],
+            'color_id' => ['nullable', 'integer', 'exists:colors,id'],
             'dead_line' => ['nullable', 'date'],
             'is_done' => ['boolean'],
             'is_archived' => ['boolean'],

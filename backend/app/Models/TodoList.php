@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Color;
 
 class TodoList extends Model
 {
@@ -10,14 +12,17 @@ class TodoList extends Model
         'user_id',
         'name',
         'description',
-        'color',
+        'color_id',
         'is_archived',
         'done_at',
         'deadline',
         'deleted_at',
 
     ];
-
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
     public function TodoItems()
     {
         return $this->hasMany(TodoItem::class);

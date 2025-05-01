@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TodoItemController extends Controller
 {
@@ -22,15 +23,27 @@ class TodoItemController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('Request input:', $request->all());
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'deadline' => ['nullable', 'date'],
             'todo_list_id' => ['required', 'exists:todo_lists,id'],
+            'tag_name' => ['nullable', 'string', 'max:255'],
         ]);
         $user = request()->user();
         $list = $user->todoLists()->findOrFail($val['todo_list_id']);
+        $tagId = null;
+        if (!empty($val['tag_name'] ?? null)) {
+            Log::info('Creating or getting tag', ['name' => $val['tag_name']]);
+
+            $tag = \App\Models\Tag::firstOrCreate(['name' => $val['tag_name']]);
+            $tagId = $tag->id;
+        }
         $item = $list->todoItems()->create([
             'name' => ucfirst($val['name']),
             'is_done' => $val['is_done'] ?? false,
+            'deadline' => $val['deadline'] ?? null,
+            'tag_id' => $tagId
         ]);
         return response()->json($item);
     }

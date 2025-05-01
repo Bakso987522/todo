@@ -15,9 +15,11 @@ export default class TodoService {
         return todoList;
     }
 
-    static async addTodoItem(name, todoListId) {
+    static async addTodoItem(name, deadline, tag_name, todoListId) {
         const { data: todoItem } = await axios.post('/api/todoitems', {
             name,
+            deadline,
+            tag_name,
             todo_list_id: todoListId
         });
         return todoItem;

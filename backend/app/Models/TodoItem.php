@@ -10,11 +10,16 @@ class TodoItem extends Model
         'name',
         'is_done',
         'deadline',
+        'tag_id',
         'todo_list_id',
     ];
     public function todoList()
     {
         return $this->belongsTo(TodoList::class);
+    }
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
     }
 
 }

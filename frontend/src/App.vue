@@ -11,8 +11,8 @@ const auth = useAuthStore()
 <template>
   <div
       :class="[
-      'grid min-h-screen grid-rows-[4rem_1fr] bg-gray-900',
-      auth.isLogged ? 'grid-cols-1 md:grid-cols-[20rem_1fr]' : 'grid-cols-1'
+      'grid select-none h-screen grid-rows-[4rem_1fr] bg-gray-900',
+      auth.isLogged ? 'grid-cols-1 md:grid-cols-[18rem_1fr] xl:grid-cols-[21rem_1fr]' : 'grid-cols-1'
     ]"
   >
 
@@ -28,7 +28,7 @@ const auth = useAuthStore()
     <!-- Main content -->
     <main
         :class="[
-        'row-start-2 overflow-auto text-white p-6',
+        'row-start-2 overflow-y-auto text-white p-6',
         auth.isLogged ? 'col-start-1 md:col-start-2' : 'col-start-1'
       ]"
     >

@@ -4,7 +4,9 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
   theme: {
     extend: {},
   }

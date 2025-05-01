@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('deleted_at')->nullable();
             $table->date('done_at')->nullable();
             $table->date('deadline')->nullable();
-            $table->string('color')->default('blue');
+            $table->foreignId('color_id')->default(1)->constrained();
             $table->timestamps();
         });
     }
