@@ -1,7 +1,7 @@
 <template>
   <button
       :disabled="loading"
-      class="flex items-center justify-center gap-2 px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition"
+      class="flex items-center justify-center gap-2 px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition duration-300"
       :class="color"
       @click="emit('click')"
   >
