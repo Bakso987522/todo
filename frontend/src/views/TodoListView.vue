@@ -1,6 +1,6 @@
 
 <template>
-  <TodoList />
+  <NewTodoList />
 </template>
 
 

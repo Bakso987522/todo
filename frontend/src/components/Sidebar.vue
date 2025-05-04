@@ -10,7 +10,7 @@
             class="block w-full hover:text-gray-400 transition duration-300 cursor-pointer"
             @click="todoStore.loading ? null : (
               selectedList = todoList.id,
-              todoStore.fetchTodoList(todoList.id)
+              todoStore.fetchTodoList(selectedList)
             )"
             :class="todoStore.loading ? 'cursor-wait hover:text-gray-100' : ''"
         >

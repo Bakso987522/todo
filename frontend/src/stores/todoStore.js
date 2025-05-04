@@ -23,7 +23,11 @@ export const useTodoStore = defineStore('todo', {
             }
         },
         async fetchTodoList(id) {
-            this.loading = true
+            if(this.todoList){
+                if(this.todoList.id !== id){
+                    this.loading = true
+                }
+            }
             try {
                 this.error = null
                 this.todoList = await TodoService.getTodoList(id)
@@ -58,7 +62,6 @@ export const useTodoStore = defineStore('todo', {
             }
         },
         async updateTodoItem(id, data) {
-            this.loading = true
             try {
                 this.error = null
                 await TodoService.updateTodoItem(id, data)

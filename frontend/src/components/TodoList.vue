@@ -1,5 +1,5 @@
 <template>
-  <div v-if="todoStore.todoList && !todoStore.loading"
+  <div v-if="todoStore.todoList.id && !todoStore.loading"
        :class="todoStore.todoList.color.name"
        class="max-w-5xl mx-auto m-4 mt-4 p-8 rounded-lg shadow-md transition animate-in fade-in duration-500"
   >
