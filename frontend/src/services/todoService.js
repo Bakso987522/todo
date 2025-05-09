@@ -27,4 +27,8 @@ export default class TodoService {
     static async updateTodoItem(id, data){
         const {data: todoItem} = await axios.patch(`/api/todoitems/${id}`, data)
     }
+    static async getColors(){
+        const {data: colors} = await axios.get('/api/colors')
+        return colors
+    }
 }

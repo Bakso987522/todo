@@ -26,18 +26,35 @@
         Dodaj
       </button>
     </form>
-<TodoList />
+    <TodoList
+
+        :todoList="todoList"
+        :todoItems="[
+    { id: 1, name: 'Przykładowe zadanie ', is_done: false },
+    { id: 1, name: 'Przykładowe zadanie z datą i tagiem', is_done: false, deadline: '2023-09-30', tag: {name: '#praca'} },
+    { id: 2, name: 'Zrobione zadanie', is_done: true }
+  ]"
+        :loading="false"
+        :adding="false"
+        :readonly="true"
+    />
   </div>
 
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import TodoList from "@/components/TodoList.vue";
 
 const name = ref('')
 const description = ref('')
-const color = ref('#ffffff')
+const color = ref('')
+const todoList = computed(() => ({
+  id: 1,
+  name: name.value || 'Tutaj będzie nazwa Twojej listy',
+  description: description.value || 'Tutaj będzie opis Twojej listy, ale spokojnie nie jest on wymagany ',
+  color: {name: color.value || 'pink'}
+}))
 
 function handleSubmit() {
   const newList = {

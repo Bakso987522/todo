@@ -9,3 +9,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->apiResource('todolists',\App\Http\Controllers\Api\TodoListController::class);
 Route::middleware(['auth:sanctum'])->apiResource('todoitems',\App\Http\Controllers\Api\TodoItemController::class);
+Route::get('/colors',[\App\Http\Controllers\Api\ColorController::class, 'index']);
