@@ -6,7 +6,7 @@
       @click="emit('click')"
   >
     <span
-        v-if="loading"
+        v-if="loading && spin"
         class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
     ></span>
     <span>{{ loading ? loadingText : text }}</span>
@@ -19,6 +19,7 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
   loadingText: { type: String, default: 'Ładowanie...' },
   color: { type: String, default: 'bg-blue-500' },
+  spin: { type: Boolean, default: true }
 })
 
 const emit = defineEmits([

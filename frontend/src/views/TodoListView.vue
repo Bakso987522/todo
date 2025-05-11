@@ -1,6 +1,5 @@
 <template>
-<NewTodoList />
-<!--  <TodoList
+<TodoList v-if="uiStore.currentTodoView === 'todolist'"
       :todoList="todoStore.todoList"
       :todoItems="todoItems"
       :loading="todoStore.loading"
@@ -9,7 +8,8 @@
       @toggle-done="handleToggleDone"
       @remove-task="handleRemoveTask"
       @edit-task="handleEditTask"
-  />-->
+  />
+  <NewTodoList v-else/>
 </template>
 
 <script setup>
@@ -17,8 +17,10 @@ import { computed, onMounted } from 'vue'
 import { useTodoStore } from '@/stores/todoStore'
 import TodoList from '@/components/TodoList.vue'
 import NewTodoList from "@/components/NewTodoList.vue";
+import {useUiStore} from "@/stores/uiStore.js";
 
 const todoStore = useTodoStore()
+const uiStore = useUiStore()
 
 onMounted(async () => {
   await todoStore.fetchTodoList()  // Załaduj listę zadań

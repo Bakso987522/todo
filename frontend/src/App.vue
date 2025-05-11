@@ -3,7 +3,12 @@ import {onMounted} from "vue";
 import { useAuthStore } from '@/stores/authStore'
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
+import {useTodoStore} from "@/stores/todoStore";
 
+const todoStore = useTodoStore()
+onMounted(() => {
+  todoStore.getColors()
+})
 const auth = useAuthStore()
 
 </script>

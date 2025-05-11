@@ -3,20 +3,21 @@
     <nav class="space-y-4 flex-1" >
       <ul class="space-y-2">
       <li
-          v-for="(todoList, index) in todoStore?.todoLists || []"
+          v-for="(todoList, index) in lists"
           :key="todoList.id"
       >
         <label
             class="block w-full hover:text-gray-400 transition duration-300 cursor-pointer"
             @click="todoStore.loading ? null : (
-              selectedList = todoList.id,
-              todoStore.fetchTodoList(selectedList)
+              uiStore.currentList = todoList.id,
+              todoStore.fetchTodoList(uiStore.currentList),
+              uiStore.setTodoView()
             )"
             :class="todoStore.loading ? 'cursor-wait hover:text-gray-100' : ''"
         >
             <input
                 :value="todoList.id"
-                v-model="selectedList"
+                v-model="uiStore.currentList"
                 :disabled="todoStore.loading"
                 type="radio"
                 name="lists"
@@ -27,12 +28,13 @@
         </label>
       </li>
         <li class="text-center">
-          <button
-              class=" flex-1 px-2 py-2 bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              @click="isAdding = true"
-          >
-            + Nowa lista
-          </button>
+          <LoadingButton
+              text="+ Nowa lista"
+              :loading="uiStore.currentTodoView === 'newtodolist'"
+              loadingText="+ Nowa lista"
+              @click="(uiStore.setNewTodoView(), selectedList = null)"
+              :spin=false
+          />
         </li>
       </ul>
     </nav>
@@ -52,12 +54,14 @@ import { useAuthStore } from '@/stores/authStore.js'
 import router from '@/router/index.js'
 import {useTodoStore} from '@/stores/todoStore.js'
 import LoadingButton from "@/components/LoadingButton.vue";
+import {useUiStore} from "@/stores/uiStore.js";
 
 const auth = useAuthStore()
 const todoStore = useTodoStore()
-const isAdding = ref(true)
 const selectedList= ref(null)
+const uiStore = useUiStore()
 
+const lists = computed(() => todoStore?.todoLists || [])
 const handleLogout = async () => {
   await auth.logout()
   await router.push('/login')
@@ -68,12 +72,9 @@ onMounted(async () => {
     await todoStore.fetchTodoLists()
     if (todoStore.todoLists.length > 0) {
       await todoStore.fetchTodoList(todoStore.todoLists[0].id)
-      selectedList.value = todoStore.todoLists[0].id
+      uiStore.currentList.value = todoStore.todoLists[0].id
     }
   }
 })
-async function addTodoList(){
-
-}
 
 </script>

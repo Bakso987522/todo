@@ -41,7 +41,7 @@ class TodoListController extends Controller
 
         $todo = TodoList::create([
             'name' => ucfirst($val['name']),
-            'description' => ucfirst($val['name']),
+            'description' => ucfirst($val['description']) ?? null,
             'color_id' => $val['color_id'] ?? null,
             'dead_line' => $val['dead_line'] ?? null,
             'user_id' => $user->id

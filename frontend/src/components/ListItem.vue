@@ -7,7 +7,7 @@
 <!-- Checkbox -->
 <input
     type="checkbox"
-    class="mr-3 w-5 h-5 cursor-pointer transition-all duration-100"
+    class="mr-3 w-5 h-5 cursor-pointer transition-all duration-300"
     :checked="item.is_done"
     @change="emit('toggleDone', index)"
     :class="[color, item.deadline ? '-translate-y-1' : '']"

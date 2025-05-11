@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import TodoService from "../services/todoService.js";
-import colors from "tailwindcss/colors.js";
 
 export const useTodoStore = defineStore('todo', {
     state: () => ({
@@ -44,7 +43,9 @@ export const useTodoStore = defineStore('todo', {
             this.loading = true
             try {
                 this.error = null
-                this.todoList = await TodoService.addTodoList(data)
+                await TodoService.addTodoList(data)
+                await this.fetchTodoLists()
+                await this.fetchTodoList(this.todoLists?.at(-1).id)
             } catch (e) {
                 console.log(e)
             } finally {
@@ -74,8 +75,14 @@ export const useTodoStore = defineStore('todo', {
                 this.loading = false
             }
         },
-        async getColors(){
-            colors = await TodoService.getColors()
+        async getColors() {
+            try {
+                const response = await TodoService.getColors()
+                this.colors = response.data
+            } catch (e) {
+                console.log(e)
+            }
         }
+
     }
 })
