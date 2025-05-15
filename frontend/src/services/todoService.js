@@ -31,4 +31,7 @@ export default class TodoService {
         const {data: colors} = await axios.get('/api/colors')
         return colors
     }
+    static async removeTodoItem(id) {
+        await axios.delete(`/api/todoitems/${id}`);
+    }
 }

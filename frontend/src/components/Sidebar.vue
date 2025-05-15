@@ -72,7 +72,9 @@ onMounted(async () => {
     await todoStore.fetchTodoLists()
     if (todoStore.todoLists.length > 0) {
       await todoStore.fetchTodoList(todoStore.todoLists[0].id)
-      uiStore.currentList.value = todoStore.todoLists[0].id
+      uiStore.currentList = todoStore.todoLists[0].id
+    }else{
+      uiStore.setNewTodoView()
     }
   }
 })

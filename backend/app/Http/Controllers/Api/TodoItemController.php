@@ -76,6 +76,9 @@ class TodoItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = request()->user();
+        $item = $user->todoItems()->findOrFail($id);
+        $item->delete();
+        return response()->json(null, 204);
     }
 }

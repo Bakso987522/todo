@@ -33,38 +33,14 @@
   </div>
 
 <!-- More/menu -->
-<div class="relative">
-  <button @click="toggleMenu(index)" class="text-white px-2 hover:text-gray-400">
-    ⋮
-  </button>
-  <transition
-      enter-active-class="animate-in fade-in zoom-in-75  duration-500"
-      leave-active-class="animate-out fade-out zoom-out-75  duration-500"
-  >
-  <div
-      v-if="openMenuIndex === index"
-      class="absolute right-0 mt-2 w- bg-white text-gray-800 rounded shadow-lg z-50"
-
-  >
-    <button
-        @click="emit('editTask', index)"
-        class="block flex w-full text-left px-4 py-2 hover:bg-gray-200"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M4 13.5V19h5.5L19 9.5l-5.5-5.5L4 13.5z" />
-      </svg> Edytuj
-    </button>
     <button
         @click="emit('removeTask', index)"
-        class="block flex w-full text-left px-4 py-2 hover:bg-gray-200"
+        class="hover:scale-110 hover:opacity-70 transition-all duration-100"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg> Usuń
+      </svg>
     </button>
-  </div>
-  </transition>
-</div>
 </li>
 </template>
 <script setup>
@@ -82,7 +58,4 @@ const emit = defineEmits([
   'editTask',
   'removeTask'
 ])
-function toggleMenu(index) {
-  openMenuIndex.value = openMenuIndex.value === index ? null : index
-}
 </script>

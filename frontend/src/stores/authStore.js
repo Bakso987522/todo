@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
 import {loginUser, checkAuthStatus, registerUser, logoutUser} from "@/services/authService.js";
+import {useTodoStore} from "@/stores/todoStore.js";
+import {useUiStore} from "@/stores/uiStore.js";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -55,7 +57,10 @@ export const useAuthStore = defineStore('auth', {
             }catch(e) {
                 console.log(e)
             }finally {
-                this.user = null
+                this.$reset()
+                useTodoStore().$reset()
+                useUiStore().$reset()
+
             }
         },
         _parseError(e) {

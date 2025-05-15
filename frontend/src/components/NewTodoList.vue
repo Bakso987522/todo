@@ -69,6 +69,7 @@ import {useTodoStore} from "@/stores/todoStore";
 import LoadingButton from "@/components/LoadingButton.vue";
 import {useUiStore} from "@/stores/uiStore.js";
 
+
 const uiStore = useUiStore()
 
 const todoStore = useTodoStore()
@@ -81,7 +82,7 @@ const todoList = computed(() => ({
   id: 1,
   name: name.value || 'Tutaj będzie nazwa Twojej listy',
   description: description.value || 'Tutaj będzie opis Twojej listy, ale spokojnie nie jest on wymagany ',
-  color: {name: colors.value.find(c => c.id === color.value).name || 'blue' }
+  color: {name: colors?.value.find(c => c.id === color.value).name || 'blue' }
 }))
 
 async function handleSubmit() {

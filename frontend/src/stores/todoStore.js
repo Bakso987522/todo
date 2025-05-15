@@ -82,6 +82,17 @@ export const useTodoStore = defineStore('todo', {
             } catch (e) {
                 console.log(e)
             }
+        },
+        async removeTodoItem(id) {
+            try {
+                this.error = null
+                await TodoService.removeTodoItem(id)
+                await this.fetchTodoList(this.todoList.id)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
+            }
         }
 
     }

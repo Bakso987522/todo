@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore'
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import {useTodoStore} from "@/stores/todoStore";
+import Snackbar from "@/components/Snackbar.vue";
 
 const todoStore = useTodoStore()
 onMounted(() => {
@@ -14,6 +15,7 @@ const auth = useAuthStore()
 </script>
 
 <template>
+
   <div
       :class="[
       'grid select-none h-screen grid-rows-[4rem_1fr] bg-gray-900',
@@ -41,4 +43,5 @@ const auth = useAuthStore()
     </main>
 
   </div>
+  <Snackbar />
 </template>
