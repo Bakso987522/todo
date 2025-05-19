@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import TodoService from "../services/todoService.js";
-
+import {useUiStore} from "@/stores/uiStore.js";
 export const useTodoStore = defineStore('todo', {
     state: () => ({
         todoLists: null,
@@ -8,7 +8,6 @@ export const useTodoStore = defineStore('todo', {
         loading: false,
         adding: false,
         error: null,
-        colors: null
     }),
     actions: {
         async fetchTodoLists() {
@@ -24,6 +23,7 @@ export const useTodoStore = defineStore('todo', {
             }
         },
         async fetchTodoList(id) {
+            const uiStore = useUiStore()
             if(this.todoList){
                 if(this.todoList.id !== id){
                     this.loading = true
@@ -32,10 +32,12 @@ export const useTodoStore = defineStore('todo', {
             try {
                 this.error = null
                 this.todoList = await TodoService.getTodoList(id)
+                uiStore.currentTodoObject = this.todoList
             } catch (e) {
                 console.log(e)
             } finally {
                 this.loading = false
+
 
             }
         },
@@ -73,14 +75,6 @@ export const useTodoStore = defineStore('todo', {
                 console.log(e)
             } finally {
                 this.loading = false
-            }
-        },
-        async getColors() {
-            try {
-                const response = await TodoService.getColors()
-                this.colors = response.data
-            } catch (e) {
-                console.log(e)
             }
         },
         async removeTodoItem(id) {

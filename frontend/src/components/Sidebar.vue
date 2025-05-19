@@ -1,7 +1,8 @@
 <template>
   <aside class="w-full m-2 mb-1 bg-gray-800 text-white p-6 shadow-md flex flex-col rounded-lg">
     <nav class="space-y-4 flex-1" >
-      <ul class="space-y-2">
+
+      <ul v-auto-animate class="space-y-2">
       <li
           v-for="(todoList, index) in lists"
           :key="todoList.id"
@@ -70,7 +71,7 @@ onMounted(async () => {
   await todoStore.fetchTodoLists()
   if (!todoStore.todoList) {
     await todoStore.fetchTodoLists()
-    if (todoStore.todoLists.length > 0) {
+    if (todoStore.todoLists.length > 0 && uiStore.currentTodoView !== 'newtodolist'){
       await todoStore.fetchTodoList(todoStore.todoLists[0].id)
       uiStore.currentList = todoStore.todoLists[0].id
     }else{

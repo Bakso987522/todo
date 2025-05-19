@@ -75,7 +75,7 @@ div.purple {
   @apply bg-purple-500 bg-opacity-15;
 }
 .gray {
-  @apply bg-gray-500 accent-gray-500 text-gray-500;
+  @apply bg-gray-500 accent-gray-500 text-gray-400;
 }
 button.gray {
   @apply bg-gray-500 hover:bg-gray-600 text-gray-100;
@@ -92,3 +92,4 @@ button.teal {
 div.teal {
   @apply bg-teal-500 bg-opacity-15;
 }
+
