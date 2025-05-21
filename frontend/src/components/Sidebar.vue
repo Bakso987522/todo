@@ -24,7 +24,7 @@
                 name="lists"
                 class="mr-2 checked:ml-4 peer hidden"
             >
-          <span :class="`peer-checked:ml-4 w-2 h-2 rounded-full inline-block transition-all ${todoList?.color.name || 'bg-blue-500'}`"></span>
+          <span :class="`peer-checked:ml-4 w-2 h-2 rounded-full inline-block transition-all ${uiStore.colors.find(c => c.id === todoList?.color_id)?.name || 'bg-blue-500'}`"></span>
             {{todoList.name}}
         </label>
       </li>
@@ -62,22 +62,16 @@ const todoStore = useTodoStore()
 const selectedList= ref(null)
 const uiStore = useUiStore()
 
-const lists = computed(() => todoStore?.todoLists || [])
+const lists = computed(() =>
+    (todoStore?.todoLists || []).filter(list => !list.deleted)
+)
+
 const handleLogout = async () => {
   await auth.logout()
   await router.push('/login')
 }
-onMounted(async () => {
-  await todoStore.fetchTodoLists()
-  if (!todoStore.todoList) {
-    await todoStore.fetchTodoLists()
-    if (todoStore.todoLists.length > 0 && uiStore.currentTodoView !== 'newtodolist'){
-      await todoStore.fetchTodoList(todoStore.todoLists[0].id)
-      uiStore.currentList = todoStore.todoLists[0].id
-    }else{
-      uiStore.setNewTodoView()
-    }
-  }
+onMounted(() => {
+  todoStore.initializeTodoLists()
 })
 
 </script>

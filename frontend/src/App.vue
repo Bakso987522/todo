@@ -7,8 +7,10 @@ import Notifications from "@/components/Notifications.vue";
 import {useUiStore} from "@/stores/uiStore.js";
 
 const uiStore = useUiStore()
-onMounted(() => {
-  uiStore.getColors()
+onMounted(async () => {
+  if (!uiStore.colors) {
+    await uiStore.getColors()
+  }
 })
 const auth = useAuthStore()
 

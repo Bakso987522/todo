@@ -16,7 +16,7 @@
             class="p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         ></textarea>
         <p class="text-gray-400">Kolor listy</p>
-        <ColorPicker v-model="todoStore.todoList.color_id" :colors="colors" />
+        <ColorPicker v-model="todoStore.tempTodoList.color_id" :colors="colors" />
         <LoadingButton
             text="Dodaj nową listę"
             loadingText="Dodawanie..."
@@ -66,7 +66,7 @@ async function handleSubmit() {
   const newList = {
     name: name.value,
     description: description.value,
-    color_id: color.value,
+    color_id: todoStore.tempTodoList.color_id,
   }
   await todoStore.addTodoList(newList)
   uiStore.setTodoView()

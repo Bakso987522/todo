@@ -23,8 +23,8 @@ const handleLogout = async () => {
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex gap-4" v-if="!auth.isLogged">
-      <RouterLink to="/login" class="hover:text-gray-500" active-class="text-blue-700">Logowanie</RouterLink>
-      <RouterLink to="/register" class="hover:text-gray-500" active-class="text-blue-700">Rejestracja</RouterLink>
+      <RouterLink to="/login" class="hover:text-gray-500" active-class="text-gray-500">Logowanie</RouterLink>
+      <RouterLink to="/register" class="hover:text-gray-500" active-class="text-gray-500">Rejestracja</RouterLink>
     </div>
 
     <div class="hidden md:flex gap-4 items-center" v-else>

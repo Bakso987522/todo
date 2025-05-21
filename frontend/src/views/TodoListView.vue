@@ -8,6 +8,8 @@
       @toggle-done="handleToggleDone"
       @remove-task="handleRemoveTask"
       @edit-task="handleEditTask"
+      @edit-list="handleEditList"
+      @delete-list="handleRemoveList"
   />
   <NewTodoList v-else/>
 </template>
@@ -24,10 +26,6 @@ const uiStore = useUiStore()
 
 const visible = ref(new Set())
 
-onMounted(async () => {
-  await todoStore.fetchTodoList()
-})
-
 
 const todoItems = computed(() => todoStore.todoList?.todo_items || [])
 const visibleItems = computed(() => todoItems.value.filter(item => !item.deleted))
@@ -42,13 +40,36 @@ async function handleToggleDone(index) {
   await todoStore.updateTodoItem(task.id, { is_done: task.is_done })
 }
 
-function handleEditTask(index) {
+function handleEditTask({ index, item }) {
+  console.log('edycja:', item)
   const task = todoItems.value[index]
-  console.log('Edytuj zadanie:', task)
+  if (!task) return
+
+  const changed =
+      task.name !== item.name ||
+      task.deadline !== item.deadline ||
+      task.tag?.name !== item.tag?.name
+
+  if (!changed) return
+  if (!item.name || item.name.trim() === '') return
+
+  const normalizedDeadline = item.deadline === '' ? null : item.deadline
+
+  const normalizedTagName = item.tag?.name || ''
+
+  task.name = item.name
+  task.deadline = normalizedDeadline
+  task.tag = { name: normalizedTagName }
+
+  todoStore.updateTodoItem(task.id, {
+    name: task.name,
+    deadline: normalizedDeadline,
+    tag_name: normalizedTagName,
+  })
 }
 
 async function handleRemoveTask(index) {
-  const task = visibleItems.value[index] // z widocznej listy
+  const task = visibleItems.value[index] 
   if (!task) return
   task.deleted = true
   let undone = false
@@ -61,5 +82,37 @@ async function handleRemoveTask(index) {
     }
   }, 5100)
 }
-
+async function handleRemoveList() {
+  const list = todoStore.todoLists.find(l => l.id === todoStore.todoList.id)
+  const copy = todoStore.todoList
+  if (!list) return
+  list.deleted = true
+  const newlists = todoStore?.todoLists.filter(list => !list.deleted)
+  if(newlists.length > 0){
+    todoStore.fetchTodoList(newlists[0].id)
+    uiStore.currentList = newlists[0].id
+    uiStore.editMode = false
+  }else{
+    uiStore.setNewTodoView()
+  }
+  let undone = false
+  uiStore.showUndoNotification('Lista została usunięta', {
+    onUndo: () => {
+      list.deleted = false;
+      undone = true;
+      uiStore.showConfirmationNotification('Cofnięto usunięcie');
+      todoStore.todoList = copy;
+      uiStore.currentTodoObject = copy;
+      uiStore.currentList = todoStore.todoList.id
+    }
+  })
+  setTimeout(async () => {
+    if (!undone) {
+      await todoStore.removeTodoList(list.id)
+    }
+  }, 5100)
+}
+async function handleEditList() {
+  await todoStore.updateTodoList()
+}
 </script>

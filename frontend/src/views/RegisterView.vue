@@ -1,7 +1,7 @@
 <template>
-  <div class="max-w-md mx-auto mt-10">
+  <div v-auto-animate class="max-w-md mx-auto mt-10 p-8 bg-blue-500 bg-opacity-10 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">Rejestracja</h2>
-    <form @submit.prevent="register">
+    <form v-auto-animate @submit.prevent="register">
       <input v-model="name" required type="text" placeholder="Imię" class="input" />
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" minlength="8" placeholder="Hasło" class="input" />

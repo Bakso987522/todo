@@ -22,9 +22,10 @@ export const useAuthStore = defineStore('auth', {
                 this.user = await AuthService.loginUser(email, password)
                 await this.fetchUser()
             }catch(e) {
-                console.log(e)
+                this._parseError(e)
             }finally {
                 this.loading = false
+                if(!useUiStore().colors) await useUiStore().getColors()
             }
 
 
@@ -34,8 +35,9 @@ export const useAuthStore = defineStore('auth', {
             try {
                 this.error = null
                 this.user = await AuthService.checkAuthStatus()
-            }catch {
+            }catch(e) {
                 this.user = null
+                this._parseError(e)
             }
         },
         async register(name, email, password) {
@@ -45,9 +47,10 @@ export const useAuthStore = defineStore('auth', {
                 this.user = await AuthService.registerUser(name, email, password)
                 await this.fetchUser()
             }catch(e) {
-                console.log(e)
+                this._parseError(e)
             }finally {
                 this.loading = false
+                if(!useUiStore().colors) await useUiStore().getColors()
             }
         },
         async logout() {
@@ -55,7 +58,7 @@ export const useAuthStore = defineStore('auth', {
                 this.error = null
                 await AuthService.logoutUser()
             }catch(e) {
-                console.log(e)
+                this._parseError(e)
             }finally {
                 this.$reset()
                 useTodoStore().$reset()
@@ -64,14 +67,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         _parseError(e) {
-            if(!e.response) return "Brak połączenia z internetem. Sprawdź swoej łacze i spróbuj ponownie"
-            switch (e.response.status) {
-                case 422:
-                    return "Nieprawidłowy login lub hasło"
-                default:
-                    return "Cos poszło nie tak (" + e.response.data.message + ")"
-            }
-
+            useUiStore().showConfirmationNotification(e.response.data.message)
         }
     }
 })

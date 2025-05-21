@@ -1,5 +1,6 @@
 <template>
-  <div class="max-w-md mx-auto mt-40">
+
+  <div v-auto-animate class="max-w-xl mx-auto mt-40 p-8 bg-blue-500 bg-opacity-10 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">Logowanie</h2>
     <form @submit.prevent="loginProcess">
       <input v-model="email" required type="email" placeholder="Email" class="input" />

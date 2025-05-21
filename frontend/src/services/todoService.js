@@ -14,6 +14,12 @@ export default class TodoService {
         const { data: todoList } = await axios.post('/api/todolists', data);
         return todoList;
     }
+    static async updateTodoList(id, data){
+        const {data: todoList} = await axios.patch(`/api/todolists/${id}`, data)
+    }
+    static async removeTodoList(id) {
+        await axios.delete(`/api/todolists/${id}`);
+    }
 
     static async addTodoItem(name, deadline, tag_name, todoListId) {
         const { data: todoItem } = await axios.post('/api/todoitems', {

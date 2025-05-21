@@ -34,8 +34,6 @@ class TodoItemController extends Controller
         $list = $user->todoLists()->findOrFail($val['todo_list_id']);
         $tagId = null;
         if (!empty($val['tag_name'] ?? null)) {
-            Log::info('Creating or getting tag', ['name' => $val['tag_name']]);
-
             $tag = \App\Models\Tag::firstOrCreate(['name' => $val['tag_name']]);
             $tagId = $tag->id;
         }
@@ -63,11 +61,25 @@ class TodoItemController extends Controller
     {
         $val = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
-            'is_done' => ['sometimes', 'boolean']
+            'is_done' => ['sometimes', 'boolean'],
+            'deadline' => ['sometimes', 'date', 'nullable'],
+            'tag_name' => ['sometimes', 'string', 'max:255', 'nullable'],
         ]);
+        Log::info('Request input:', $request->all());
         $user = request()->user();
         $item = $user->todoItems()->findOrFail($id);
-        $item->update($val);
+        $tagId = null;
+        if (!empty($val['tag_name'] ?? null)) {
+            $tag = \App\Models\Tag::firstOrCreate(['name' => $val['tag_name']]);
+            $tagId = $tag->id;
+        }
+        $item->update([
+            'name' => ucfirst($val['name'] ?? $item->name),
+            'is_done' => $val['is_done'] ?? $item->is_done,
+            'deadline' => $val['deadline'] ?? null,
+            'tag_id' => $tagId
+
+        ]);
         return response()->json($item);
     }
 

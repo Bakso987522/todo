@@ -86,7 +86,6 @@ class TodoListController extends Controller
             'color_id' => ['nullable', 'integer', 'exists:colors,id'],
             'dead_line' => ['nullable', 'date'],
             'is_done' => ['boolean'],
-            'is_archived' => ['boolean'],
             'done_at' => ['nullable', 'date'],
         ]);
 
@@ -100,11 +99,14 @@ class TodoListController extends Controller
      */
     public function destroy(TodoList $todolist, Request $request)
     {
-
         if ($request->user()->id !== $todolist->user_id) {
             return response()->json(['message' => 'Not found'], 404);
         }
+
+        $todolist->todoItems()->delete();
         $todolist->delete();
+
         return response()->json(null, 204);
     }
+
 }
