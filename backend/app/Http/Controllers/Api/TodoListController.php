@@ -30,6 +30,16 @@ class TodoListController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        if (!is_null($user->max_lists)) {
+            $currentCount = TodoList::where('user_id', $user->id)->count();
+            if ($currentCount >= $user->max_lists) {
+                return response()->json([
+                    'message' => 'Osiągnięto maksymalną liczbę list.'
+                ], 403);
+            }
+        }
 
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -37,7 +47,6 @@ class TodoListController extends Controller
             'color_id' => ['nullable', 'integer', 'exists:colors,id'],
             'dead_line' => ['nullable', 'date'],
         ]);
-        $user = $request->user();
 
         $todo = TodoList::create([
             'name' => ucfirst($val['name']),
@@ -49,6 +58,7 @@ class TodoListController extends Controller
 
         return response()->json($todo, 201);
     }
+
 
     /**
      * Display the specified resource.

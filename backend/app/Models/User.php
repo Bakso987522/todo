@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
+        'max_lists',
+        'max_tasks_per_list',
     ];
 
     /**
@@ -54,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(TodoItem::class, TodoList::class);
     }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 }

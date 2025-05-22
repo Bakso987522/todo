@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-4">
-    <div class="bg-gray-800 p-8 m-4 rounded-lg">
+  <div class="flex flex-col lg:flex-row max-w-6xl mx-auto gap-2">
+    <div class="bg-gray-800 p-8  lg:m-4 rounded-lg w-full lg:w-1/3 h-1/2">
       <h2 class="text-2xl font-bold mb-4">Dodaj nową listę todo</h2>
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-4 text-gray-800">
         <input
@@ -24,8 +24,8 @@
         />
       </form>
     </div>
-    <div class="relative flex-1">
-      <div class="absolute inset-0 z-[999] group"></div>
+    <div class="relative flex-1 w-full lg:w-2/3">
+      <div class="absolute inset-0 z-40 group"></div>
       <TodoList
           :todoList="todoList"
           :todoItems="[
@@ -70,7 +70,12 @@ async function handleSubmit() {
   }
   await todoStore.addTodoList(newList)
   uiStore.setTodoView()
-  uiStore.currentList = todoStore.todoList.id
-  uiStore.showConfirmationNotification('Pomyślnie dodano nową listę')
+  if(todoStore.error){
+    await todoStore.initializeTodoLists()
+  }else{
+    uiStore.currentList = todoStore.todoList?.id
+    uiStore.showConfirmationNotification('Pomyślnie dodano nową listę')
+  }
+
 }
 </script>

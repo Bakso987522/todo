@@ -7,11 +7,13 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
         loading: null,
-        error: null
+        error: null,
+        initialized: false
     }),
 
     getters: {
-        isLogged: (state) => !!state.user
+        isLogged: (state) => !!state.user,
+        isAdmin: (state) => state.user?.role === 'admin',
     },
 
     actions: {
@@ -19,40 +21,46 @@ export const useAuthStore = defineStore('auth', {
             this.loading = true
             try {
                 this.error = null
-                this.user = await AuthService.loginUser(email, password)
+                await AuthService.loginUser(email, password)
                 await this.fetchUser()
-            }catch(e) {
+            } catch (e) {
                 this._parseError(e)
-            }finally {
+            } finally {
                 this.loading = false
-                if(!useUiStore().colors) await useUiStore().getColors()
+                if (!useUiStore().colors) await useUiStore().getColors()
             }
-
-
         },
+
+
         async fetchUser() {
-            if(this.user) return
+            if(this.initialized) return
             try {
                 this.error = null
                 this.user = await AuthService.checkAuthStatus()
             }catch(e) {
                 this.user = null
-                this._parseError(e)
+                this.initialized = true
+                if (e.response?.status === 401) {
+                    this.user = null;
+                } else {
+                    this._parseError(e);
+                }
             }
         },
         async register(name, email, password) {
             this.loading = true
             try {
                 this.error = null
-                this.user = await AuthService.registerUser(name, email, password)
+                await AuthService.registerUser(name, email, password)
                 await this.fetchUser()
-            }catch(e) {
+            } catch (e) {
                 this._parseError(e)
-            }finally {
+            } finally {
                 this.loading = false
-                if(!useUiStore().colors) await useUiStore().getColors()
+                if (!useUiStore().colors) await useUiStore().getColors()
             }
         },
+
         async logout() {
             try {
                 this.error = null
@@ -67,7 +75,37 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         _parseError(e) {
-            useUiStore().showConfirmationNotification(e.response.data.message)
+            const ui = useUiStore()
+            const auth = useAuthStore()
+
+            if (e.response) {
+                const status = e.response.status
+
+                if (status === 401) {
+                    this.error = 'Nieprawidłowy email lub hasło.'
+                    auth.$reset()
+                    ui.showErrorNotification(this.error)
+                    import('@/router').then(r => r.default.push({ name: 'login' }))
+                    return
+                }
+
+                if (status === 422 && e.response.data.errors) {
+                    // Laravel validation error
+                    const firstField = Object.keys(e.response.data.errors)[0]
+                    this.error = e.response.data.errors[firstField][0]
+                } else if (e.response.data.message) {
+                    this.error = e.response.data.message
+                } else {
+                    this.error = 'Wystąpił błąd. Spróbuj ponownie.'
+                }
+            } else if (e.request) {
+                this.error = 'Brak odpowiedzi z serwera.'
+            } else {
+                this.error = "Nieznany błąd: " + e.message
+            }
+
+            ui.showErrorNotification(this.error)
         }
+
     }
 })

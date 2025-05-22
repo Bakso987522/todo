@@ -32,7 +32,7 @@
       <ColorPicker v-model="todoStore.tempTodoList.color_id" :colors="useUiStore().colors" class="my-3"/>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-2 mb-4 md:max-w-5xl">
+    <div class="flex flex-col lg:flex-row gap-2 mb-4 md:max-w-5xl">
       <input
           v-if="!uiStore.editMode"
           id="new-task"
@@ -70,7 +70,7 @@
                      :loading="loading"
                      loadingText="Usuwanie..."
                      @click="emit('delete-list')"
-                     class="mt-4 md:mt-0 md:ml-auto"
+                     class="mt-4 lg:mt-0 lg:ml-auto"
                      v-if="uiStore.editMode"
       />
     </div>

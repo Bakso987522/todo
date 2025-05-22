@@ -24,27 +24,43 @@ class TodoItemController extends Controller
     public function store(Request $request)
     {
         Log::info('Request input:', $request->all());
+
         $val = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'deadline' => ['nullable', 'date'],
             'todo_list_id' => ['required', 'exists:todo_lists,id'],
             'tag_name' => ['nullable', 'string', 'max:255'],
         ]);
-        $user = request()->user();
+
+        $user = $request->user();
+
         $list = $user->todoLists()->findOrFail($val['todo_list_id']);
+
+        if (!is_null($user->max_tasks_per_list)) {
+            $currentTaskCount = $list->todoItems()->count();
+            if ($currentTaskCount >= $user->max_tasks_per_list) {
+                return response()->json([
+                    'message' => 'Osiągnięto maksymalną liczbę zadań dla tej listy.'
+                ], 403);
+            }
+        }
+
         $tagId = null;
-        if (!empty($val['tag_name'] ?? null)) {
+        if (!empty($val['tag_name'])) {
             $tag = \App\Models\Tag::firstOrCreate(['name' => $val['tag_name']]);
             $tagId = $tag->id;
         }
+
         $item = $list->todoItems()->create([
             'name' => ucfirst($val['name']),
             'is_done' => $val['is_done'] ?? false,
             'deadline' => $val['deadline'] ?? null,
             'tag_id' => $tagId
         ]);
+
         return response()->json($item);
     }
+
 
     /**
      * Display the specified resource.

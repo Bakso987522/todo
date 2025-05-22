@@ -82,11 +82,50 @@
       </div>
     </div>
   </NotificationGroup>
+  <NotificationGroup group="error">
+    <div class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none">
+      <div class="w-full max-w-sm">
+        <Notification
+            v-slot="{ notifications, close }"
+            enter="ease-out duration-300 transition"
+            enter-from="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-4"
+            enter-to="translate-y-0 opacity-100 sm:translate-x-0"
+            leave="transition ease-in duration-300"
+            leave-from="opacity-100"
+            leave-to="opacity-0 translate-x-12"
+            move="transition duration-500"
+            move-delay="delay-300"
+        >
+          <div
+              v-for="notification in notifications"
+              :key="notification.id"
+              class="w-full max-w-sm mt-4 overflow-hidden bg-red-700 rounded-lg shadow-lg pointer-events-auto ring-1 ring-red-400 ring-opacity-50"
+              role="alert"
+          >
+            <div class="p-4">
+              <div class="flex items-start">
+                <div class="shrink-0">
+                  <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728"/>
+                  </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                  <p class="text-sm font-bold text-white">{{ notification.title || 'Błąd' }}</p>
+                  <p class="text-sm text-gray-200">{{ notification.text }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Notification>
+      </div>
+    </div>
+  </NotificationGroup>
+
 </template>
 <script setup>
 import {useUiStore} from "@/stores/uiStore.js";
-import {useTodoStore} from "@/stores/todoStore.js";
-const todoStore = useTodoStore()
+
 const uiStore = useUiStore()
 
 </script>

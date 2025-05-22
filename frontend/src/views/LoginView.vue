@@ -5,7 +5,6 @@
     <form @submit.prevent="loginProcess">
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" placeholder="Hasło" class="input" />
-      <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
       <LoadingButton
           text="Zaloguj się"
           :loading="auth.loading"

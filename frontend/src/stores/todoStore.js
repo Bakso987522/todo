@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import TodoService from "../services/todoService.js";
 import {useUiStore} from "@/stores/uiStore.js";
+import router from "@/router/index.js";
 export const useTodoStore = defineStore('todo', {
     state: () => ({
         todoLists: null,
@@ -23,7 +24,7 @@ export const useTodoStore = defineStore('todo', {
                 this.error = null
                 this.todoLists = await TodoService.getTodoLists()
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
 
@@ -31,17 +32,15 @@ export const useTodoStore = defineStore('todo', {
         },
         async fetchTodoList(id) {
             const uiStore = useUiStore()
-            if(this.todoList){
-                if(this.todoList.id !== id){
-                    this.loading = true
-                }
+            if(this.todoList?.id !== id) {
+                this.loading = true
             }
             try {
                 this.error = null
                 this.todoList = await TodoService.getTodoList(id)
                 uiStore.currentTodoObject = this.todoList
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
 
@@ -57,7 +56,7 @@ export const useTodoStore = defineStore('todo', {
                 await this.fetchTodoLists()
                 await this.fetchTodoList(this.todoLists?.at(-1).id)
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
             }
@@ -72,8 +71,7 @@ export const useTodoStore = defineStore('todo', {
                 this.todoLists[idx].color_id = this.todoList.color_id
                 this.todoLists[idx].name = this.todoList.name
             } catch (e) {
-                console.log(e)
-                this.error = e
+                this._parseError(e)
             } finally {
                 this.loading = false
                 this.adding = false
@@ -89,7 +87,7 @@ export const useTodoStore = defineStore('todo', {
                 await TodoService.removeTodoList(id)
                 await this.fetchTodoLists()
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
             }
@@ -101,7 +99,7 @@ export const useTodoStore = defineStore('todo', {
                 await TodoService.addTodoItem(name, deadline, tag_name, this.todoList.id)
                 await this.fetchTodoList(this.todoList.id)
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             }finally {
                 this.adding = false
             }
@@ -112,7 +110,7 @@ export const useTodoStore = defineStore('todo', {
                 await TodoService.updateTodoItem(id, data)
                 await this.fetchTodoList(this.todoList.id)
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
             }
@@ -123,7 +121,7 @@ export const useTodoStore = defineStore('todo', {
                 await TodoService.removeTodoItem(id)
                 await this.fetchTodoList(this.todoList.id)
             } catch (e) {
-                console.log(e)
+                this._parseError(e)
             } finally {
                 this.loading = false
             }
@@ -132,12 +130,15 @@ export const useTodoStore = defineStore('todo', {
             const uiStore = useUiStore()
             await this.fetchTodoLists()
             if (!this.todoList) {
-                if (this.todoLists?.length > 0 && uiStore.currentTodoView !== 'newtodolist') {
-                    // pobierz pierwszą listę
+                if (this.todoLists?.length > 0 && uiStore.currentTodoView === 'todolist' && router.currentRoute.value.path === '/todos') {
                     await this.fetchTodoList(this.todoLists[0].id)
                     uiStore.currentList = this.todoLists[0].id
                 } else {
-                    uiStore.setNewTodoView()
+                    if (router.currentRoute.value.path === '/todos'){
+                        uiStore.setNewTodoView()
+
+                    }
+
                 }
             }
         },
@@ -206,6 +207,9 @@ export const useTodoStore = defineStore('todo', {
                     return aVal < bVal ? 1 : aVal > bVal ? -1 : 0
                 }
             })
+        },
+        _parseError(e) {
+            useUiStore()._parseError(e)
         }
 
 

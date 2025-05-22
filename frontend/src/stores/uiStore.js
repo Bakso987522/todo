@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {notify} from "notiwind";
 import UiService from "@/services/uiService.js";
 import {useTodoStore} from "@/stores/todoStore.js";
+import router from "@/router/index.js";
 export const useUiStore = defineStore('ui', {
     state: () => ({
         currentTodoView: 'todolist',
@@ -20,14 +21,23 @@ export const useUiStore = defineStore('ui', {
         setTodoView() {
             this.currentTodoView = 'todolist'
             this.editMode = false
-            useTodoStore().loading = true
+            router.currentRoute.value.path !== '/todos' ? router.push('/todos') : null
         },
         setNewTodoView() {
             this.currentTodoView = 'newtodolist'
+            useTodoStore().todoList = null
             this.editMode = false
             this.currentList = null
             useTodoStore().resetTempTodoList()
+            router.currentRoute.value.path !== '/todos' ? router.push('/todos') : null
             this.tempList()
+        },
+        setAdminPanelView() {
+            this.currentTodoView = 'adminpanel'
+            this.editMode = false
+            useTodoStore().todoList = null
+            this.currentList = null
+            router.currentRoute.value.path !== '/adminpanel' ? router.push('/adminpanel') : null
         },
         showConfirmationNotification(message) {
             notify({
@@ -35,7 +45,15 @@ export const useUiStore = defineStore('ui', {
                 type: 'confirmation',
                 title: 'Sukces!',
                 text: message,
-            }, 3000)
+            }, 2500)
+        },
+        showErrorNotification(message) {
+            notify({
+                group: 'error',
+                type: 'error',
+                title: 'Błąd!',
+                text: message,
+            }, 3500)
         },
         showUndoNotification(message, {onUndo}, title = '') {
             notify({
@@ -68,7 +86,36 @@ export const useUiStore = defineStore('ui', {
             } catch (e) {
                 console.log(e)
             }
+        },
+        _parseError(e) {
+            const ui = useUiStore()
+            const auth = useAuthStore()
+
+            if (e.response) {
+                const status = e.response.status
+
+                if (status === 401) {
+                    this.error = 'Sesja wygasła. Zaloguj się ponownie.'
+                    auth.$reset()
+                    ui.showErrorNotification(this.error)
+
+                    import('@/router').then(module => {
+                        module.default.push({ name: 'login' })
+                    })
+
+                    return
+                }
+
+                this.error = e.response.data.message || 'Wystąpił błąd.'
+            } else if (e.request) {
+                this.error = 'Brak odpowiedzi z serwera'
+            } else {
+                this.error = "Nieznany błąd: " + e.message
+            }
+
+            ui.showErrorNotification(this.error)
         }
+
 
     }
 })

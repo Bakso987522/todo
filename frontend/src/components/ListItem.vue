@@ -11,6 +11,7 @@
   >
     <!-- Checkbox -->
     <input
+        :name="item.id"
         type="checkbox"
         class="mr-3 w-5 h-5 cursor-pointer transition-all duration-300"
         :checked="item.is_done"
@@ -19,7 +20,7 @@
         :disabled="isEditing"
     />
 
-
+<div :class="isEditing ? 'flex flex-col lg:flex-row gap-4 items-center w-full' : 'flex w-full'">
     <div class="flex-1">
       <div v-if="!isEditing" class="text-xs text-gray-400 absolute left-12 top-1">
         {{ item.deadline }}
@@ -68,7 +69,7 @@
     <div v-if="!isEditing" class="flex items-center gap-2 justify-center">
       <button
           @click="startEdit"
-          class="hover:scale-110 hover:opacity-70 transition-all duration-200 opacity-0 group-hover:opacity-100"
+          class="hover:scale-110 hover:opacity-70 transition-all duration-200 md:opacity-0 group-hover:opacity-100"
       >
         <svg xmlns="http://www.w3.org/2000/svg"
              class="w-6 h-6" viewBox="0 0 24 24"
@@ -81,7 +82,7 @@
 
       <button
           @click="emit('removeTask', index)"
-          class="hover:scale-110 hover:opacity-70 transition-all duration-200 opacity-0 group-hover:opacity-100 mx-2"
+          class="hover:scale-110 hover:opacity-70 transition-all duration-200 md:opacity-0 group-hover:opacity-100 mx-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -89,7 +90,7 @@
       </button>
     </div>
 
-    <div v-else class="flex flex-col gap-4 ml-1">
+    <div v-else class="flex flex-row lg:flex-col  gap-24 lg:gap-4 ml-1">
       <button @click="saveEdit" class="hover:scale-110 hover:opacity-70 transition-all duration-200">
         Zapisz
       </button>
@@ -97,6 +98,7 @@
         Anuluj
       </button>
     </div>
+</div>
   </li>
 </template>
 

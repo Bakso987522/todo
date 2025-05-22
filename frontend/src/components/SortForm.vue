@@ -3,6 +3,7 @@
     <label class="flex items-center gap-2 text-sm text-white">
       Sortuj według:
       <select
+          name="by"
           v-model="sortBy"
           @change="applySort"
           class="bg-gray-700 text-white rounded px-2 py-1 focus:outline-none"
@@ -17,6 +18,7 @@
     <label class="flex items-center gap-2 text-sm text-white">
       Kierunek:
       <select
+          name="direction"
           v-model="sortDirection"
           @change="applySort"
           class="bg-gray-700 text-white rounded px-2 py-1 focus:outline-none"

@@ -6,8 +6,7 @@
       <input v-model="email" required type="email" placeholder="Email" class="input" />
       <input v-model="password" required type="password" minlength="8" placeholder="Hasło" class="input" />
       <input v-model="rePassword" required type="password" minlength="8" placeholder="Powtórz Hasło" class="input" />
-      <p v-if="!matchPassword && rePassword" class="text-red-500 text-xm m-2">Hasła nie są takie same</p>
-      <p v-if="auth.error" class="text-red-500 text-xm m-2">{{auth.error}}</p>
+      <p v-if="!matchPassword && rePassword" class="text-red-500 text-xm mb-2">Hasła nie są takie same</p>
       <LoadingButton
           text="Zarejestruj się"
           :loading="auth.loading"

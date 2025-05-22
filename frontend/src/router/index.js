@@ -4,6 +4,8 @@ import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import TodoListView from "../views/TodoListView.vue";
 import {useAuthStore} from "../stores/authStore.js";
+import AdminPanel from "../views/AdminPanel.vue";
+
 
 const routes = [
     {
@@ -29,6 +31,16 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: "/adminpanel",
+        name: "adminpanel",
+        component: AdminPanel,
+        meta: {
+            requiresAuth: true,
+            requiresAdmin: true,
+        }
+    }
+
 ];
 
 const router = createRouter({
@@ -38,9 +50,11 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const auth = useAuthStore()
-    if(!auth.isLogged && !auth.user){
+
+    if (!auth.isLogged && !auth.user) {
         await auth.fetchUser()
     }
+
     if (
         ['login', 'register'].includes(to.name) &&
         to.name !== from.name
@@ -49,17 +63,24 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if ((to.name === 'login' || to.name === 'register') && auth.isLogged) {
-        next({name: 'todos'})
+        next({ name: 'todos' })
     }
+
     else if (to.meta.requiresAuth) {
         if (!auth.isLogged) {
-            next({name: 'login'})
+            next({ name: 'login' })
+        } else if (to.meta.requiresAdmin && auth.user?.role !== 'admin') {
+            next({ name: 'todos' }) // lub `/unauthorized`
         } else {
             next()
         }
-    } else {
+    }
+
+    // Trasa publiczna
+    else {
         next()
     }
 })
+
 
 export default router
