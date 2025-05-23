@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import AdminService from '@/services/AdminService';
+import AdminService from '@/services/adminService';
 import {useUiStore} from "@/stores/uiStore.js";
 
 export const useAdminStore = defineStore('admin', {
