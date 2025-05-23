@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import AuthService from "@/services/authService.js";
 import {useTodoStore} from "@/stores/todoStore.js";
 import {useUiStore} from "@/stores/uiStore.js";
+import router from "@/router/index.js";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore('auth', {
         async login(email, password) {
             this.loading = true
             try {
+                this.initialized = false
                 this.error = null
                 await AuthService.loginUser(email, password)
                 await this.fetchUser()
@@ -27,6 +29,10 @@ export const useAuthStore = defineStore('auth', {
                 this._parseError(e)
             } finally {
                 this.loading = false
+                if(!this.error) {
+                    useUiStore().showConfirmationNotification('Zalogowano pomyślnie')
+                    await router.push('/todos')
+                }
                 if (!useUiStore().colors) await useUiStore().getColors()
             }
         },
@@ -37,19 +43,22 @@ export const useAuthStore = defineStore('auth', {
             try {
                 this.error = null
                 this.user = await AuthService.checkAuthStatus()
+                this.initialized = true
             }catch(e) {
                 this.user = null
-                this.initialized = true
                 if (e.response?.status === 401) {
                     this.user = null;
                 } else {
                     this._parseError(e);
                 }
+            }finally {
+                this.initialized = true
             }
         },
         async register(name, email, password) {
             this.loading = true
             try {
+                this.initialized = false
                 this.error = null
                 await AuthService.registerUser(name, email, password)
                 await this.fetchUser()
@@ -57,6 +66,10 @@ export const useAuthStore = defineStore('auth', {
                 this._parseError(e)
             } finally {
                 this.loading = false
+                if(!this.error) {
+                    useUiStore().showConfirmationNotification('Zarejestrowano pomyślnie')
+                    await router.push('/todos')
+                }
                 if (!useUiStore().colors) await useUiStore().getColors()
             }
         },
@@ -90,7 +103,6 @@ export const useAuthStore = defineStore('auth', {
                 }
 
                 if (status === 422 && e.response.data.errors) {
-                    // Laravel validation error
                     const firstField = Object.keys(e.response.data.errors)[0]
                     this.error = e.response.data.errors[firstField][0]
                 } else if (e.response.data.message) {

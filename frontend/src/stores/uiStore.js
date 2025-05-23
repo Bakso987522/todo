@@ -94,7 +94,7 @@ export const useUiStore = defineStore('ui', {
             if (e.response) {
                 const status = e.response.status
 
-                if (status === 401) {
+                if (status === 401 || status === 419) {
                     this.error = 'Sesja wygasła. Zaloguj się ponownie.'
                     auth.$reset()
                     ui.showErrorNotification(this.error)

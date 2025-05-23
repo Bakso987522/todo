@@ -11,7 +11,7 @@ const routes = [
     {
         path: "/",
         name: "default",
-        component: LoginView,
+        component: LoginView
     },
     {
         path: "/login",
@@ -55,32 +55,26 @@ router.beforeEach(async (to, from, next) => {
         await auth.fetchUser()
     }
 
-    if (
-        ['login', 'register'].includes(to.name) &&
-        to.name !== from.name
-    ) {
-        auth.error = null
+    if (['login', 'register'].includes(to.name) && auth.isLogged) {
+        return next({ name: 'todos' })
     }
 
-    if ((to.name === 'login' || to.name === 'register') && auth.isLogged) {
-        next({ name: 'todos' })
+    if (to.meta.requiresAuth && !auth.isLogged) {
+        return next({ name: 'login' })
     }
 
-    else if (to.meta.requiresAuth) {
-        if (!auth.isLogged) {
-            next({ name: 'login' })
-        } else if (to.meta.requiresAdmin && auth.user?.role !== 'admin') {
-            next({ name: 'todos' }) // lub `/unauthorized`
-        } else {
-            next()
-        }
+    if (to.meta.requiresAdmin && auth.user?.role !== 'admin') {
+        return next({ name: 'todos' })
     }
 
-    // Trasa publiczna
-    else {
-        next()
+    if (to.name === 'default') {
+        return next(auth.isLogged ? { name: 'todos' } : { name: 'login' })
     }
+
+    next()
 })
+
+
 
 
 export default router

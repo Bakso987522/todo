@@ -2,26 +2,42 @@ import axios from '@/axios';
 
 export default class AuthService {
     static async registerUser(name, email, password) {
-        await axios.get('/sanctum/csrf-cookie');
-        await axios.post('/register', {
-            name,
-            email,
-            password,
-            password_confirmation: password
-        });
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+            await axios.post('/register', {
+                name,
+                email,
+                password,
+                password_confirmation: password
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async loginUser(email, password) {
-        await axios.get('/sanctum/csrf-cookie');
-        await axios.post('/login', { email, password });
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+            await axios.post('/login', { email, password });
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async logoutUser() {
-        await axios.post('/logout');
+        try {
+            await axios.post('/logout');
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async checkAuthStatus() {
-        const { data: user } = await axios.get('/api/user');
-        return user;
+        try {
+            const { data: user } = await axios.get('/api/user');
+            return user;
+        } catch (error) {
+            throw error;
+        }
     }
 }

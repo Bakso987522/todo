@@ -1,6 +1,6 @@
 <template>
   <NotificationGroup group="confirmation">
-    <div class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none">
+    <div class="fixed inset-0 flex sm:items-start sm:justify-end items-end justify-center p-4 sm:p-6 pointer-events-none">
       <div class="w-full max-w-sm">
         <Notification
             v-slot="{ notifications}"
@@ -39,7 +39,7 @@
     </div>
   </NotificationGroup>
   <NotificationGroup group="undo">
-    <div class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none">
+    <div class="fixed inset-0 flex sm:items-start sm:justify-end items-end justify-center p-4 sm:p-6 pointer-events-none">
       <div class="w-full max-w-sm">
         <Notification
             v-slot="{ notifications, close}"
@@ -83,8 +83,8 @@
     </div>
   </NotificationGroup>
   <NotificationGroup group="error">
-    <div class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none">
-      <div class="w-full max-w-sm">
+    <div class="fixed inset-0 flex sm:items-start sm:justify-end items-end justify-center p-4 sm:p-6 pointer-events-none">
+    <div class="w-full max-w-sm">
         <Notification
             v-slot="{ notifications, close }"
             enter="ease-out duration-300 transition"

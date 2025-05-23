@@ -27,9 +27,9 @@ const router = useRouter()
 const auth = useAuthStore()
 
 async function loginProcess() {
-    const user = await useAuthStore().login(email.value, password.value)
-    await router.push('/todos')
+  await auth.login(email.value, password.value)
 }
+
 </script>
 
 <style scoped>
