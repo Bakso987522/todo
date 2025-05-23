@@ -33,7 +33,7 @@ onMounted(async () => {
     <!-- Sidebar mobile -->
     <MobileSidebar class="flex md:hidden" :visible="showMobileSidebar" @close="showMobileSidebar = false" />
 
-    <main :class="['row-start-2 overflow-y-auto text-white p-6', auth.isLogged ? 'col-start-1 md:col-start-2' : 'col-start-1']">
+    <main :class="['row-start-2 overflow-y-auto text-white p-2 md:p-6', auth.isLogged ? 'col-start-1 md:col-start-2' : 'col-start-1']">
       <RouterView />
     </main>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div v-auto-animate v-if="todoList?.id && !loading &&  useUiStore().colors"
        :class="useUiStore().activeColor"
-       class="relative max-w-5xl mx-auto m-4 mt-4 p-8 rounded-lg shadow-md max-h-fit transition-all animate-in fade-in duration-500"
+       class="relative max-w-5xl mx-auto m-4 mt-4 p-5 pt-11 md:p-8 rounded-lg shadow-md max-h-fit transition-all animate-in fade-in duration-500"
   >
     <div :class="editingIndex !== null ? 'pointer-events-none' : ''">
     <svg

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col lg:flex-row max-w-6xl mx-auto gap-2">
-    <div class="bg-gray-800 p-8  lg:m-4 rounded-lg w-full lg:w-1/3 h-1/2">
+  <div class="flex flex-col lg:flex-row max-w-6xl mx-auto gap-2 mt-6 md:mt-2">
+    <div class="bg-gray-800 p-4 md:p-8  lg:m-4 rounded-lg w-full lg:w-1/3 h-1/2">
       <h2 class="text-2xl font-bold mb-4">Dodaj nową listę todo</h2>
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-4 text-gray-800">
         <input
