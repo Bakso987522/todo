@@ -18,7 +18,7 @@ const emit = defineEmits(['toggle-mobile-sidebar'])
 <template>
 
   <nav class="m-2 mt-1 h-16 px-6 bg-gray-800 flex justify-between items-center text-lg font-semibold text-gray-300 shadow-md rounded-lg ">
-    <button @click="emit('toggle-mobile-sidebar')" class="md:hidden text-white bg-gray-700 p-2 rounded">
+    <button v-if="auth.isLogged" @click="emit('toggle-mobile-sidebar')" class="md:hidden text-white bg-gray-700 p-2 rounded">
       ☰
     </button>
 
