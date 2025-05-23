@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-full m-2 mb-1 bg-gray-800 text-white p-6 shadow-md flex flex-col rounded-lg">
+  <aside class="w-full m-2 md:mt-4 mb-1 bg-gray-800 text-white p-6 shadow-md flex flex-col rounded-lg">
     <nav class="space-y-4 flex-1">
       <ul v-auto-animate class="space-y-2">
         <li
