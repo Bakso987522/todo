@@ -32,13 +32,13 @@
       <ColorPicker v-model="todoStore.tempTodoList.color_id" :colors="useUiStore().colors" class="my-3"/>
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-2 mb-4 md:max-w-5xl">
+    <div class="flex flex-col lg:flex-row gap-2 mb-4 md:max-w-5xl ">
       <input
           v-if="!uiStore.editMode"
           id="new-task"
           v-model="newItem"
-          @focus="newTaskActive = true"
-          @blur="newTaskActive = false"
+          @focus="handleFocus"
+          @blur="handleBlur"
           @keyup.enter="emitAddItem"
           placeholder="Dodaj zadanie..."
           class="flex-1 px-4 py-2 border text-gray-800 border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-white focus:ring-opacity-20"
@@ -83,6 +83,8 @@
               type="date"
               :min="new Date().toISOString().split('T')[0]"
               v-model="deadline"
+              @focus="handleFocus"
+              @blur="handleBlur"
               class="block px-2 py-1 border text-gray-800 border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
@@ -91,6 +93,8 @@
           <input
               type="text"
               v-model="tagName"
+              @focus="handleFocus"
+              @blur="handleBlur"
               class="px-2 py-1 border text-gray-800 border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="#hashtag np. #praca"
           />
@@ -168,5 +172,18 @@ function emitAddItem() {
     newItem.value = ''
   }
 }
+let blurTimer = null
+
+function handleFocus() {
+  if (blurTimer) clearTimeout(blurTimer)
+  newTaskActive.value = true
+}
+
+function handleBlur() {
+  blurTimer = setTimeout(() => {
+    newTaskActive.value = false
+  }, 800)
+}
+
 
 </script>
